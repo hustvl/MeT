@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MeT · Native Scalable Memory Models with Transformers</title>
+  <meta name="description" content="Memory Transformer makes persistent visual state an independently scalable architectural resource. Explore the results, architecture, and visual showcases.">
+  <link rel="canonical" href="https://hustvl.github.io/MeT/">
+  <link rel="icon" href="assets/icon.png" type="image/png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MeT · Native Scalable Memory Models with Transformers">
+  <meta property="og:description" content="Scale visual memory independently. Explore two scaling axes and see how MeT interprets visual sequences over time.">
+  <meta property="og:url" content="https://hustvl.github.io/MeT/">
+  <meta property="og:image" content="https://hustvl.github.io/MeT/assets/share.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="assets/data.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="#main" aria-label="MeT home"><img src="assets/icon.png" alt="" width="31" height="31">MeT</a>
+      <nav aria-label="Page sections">
+        <a href="#scaling">Scaling</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#results">Results</a>
+        <a href="#showcases">Showcases</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="paper-nav" aria-disabled="true">Read the paper</a>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero">
+      <div class="shell hero-inner">
+        <div class="hero-copy">
+          <p class="hero-kicker">Memory Transformer</p>
+          <h1>Native Scalable<br class="wide-break"> Memory Models<br class="wide-break"> with Transformers</h1>
+          <p class="hero-deck">Making native visual memory an independently scalable architectural resource, establishing two scaling trends with compact states and low computational overhead</p>
+          <ul class="authors" aria-label="Authors">
+            <li><a href="https://ziyangxu.top/">Ziyang Xu</a><sup>1</sup></li><li>Lucia Cascone<sup>2</sup></li><li>Aniello Castiglione<sup>2</sup></li>
+            <li>Michele Nappi<sup>2</sup></li><li>Wenyu Liu<sup>1</sup></li><li>Xinggang Wang<sup>1</sup><a class="email" href="mailto:xgwang@hust.edu.cn" aria-label="Email Xinggang Wang, corresponding author">✉</a></li>
+          </ul>
+          <p class="affiliations"><span><sup>1</sup> Huazhong University of Science and Technology</span><span><sup>2</sup> University of Salerno</span></p>
+          <p class="corresponding-author">✉: Corresponding Author</p>
+          <details class="hero-abstract">
+            <summary>Abstract</summary>
+            <p>We introduce Memory Transformer (MeT), a novel method for native visual memory modeling that opens a new scaling dimension for vision Transformers. Its hierarchical memory maintains recurrent states updated from spatial features and returned through residual readouts, making persistent context an intrinsic part of the representation hierarchy. A separate hidden-state width controls memory capacity independently of backbone width and depth, while the retained state remains bounded as the input sequence grows. MeT reveals two complementary scaling trends: increasing memory capacity consistently improves accuracy at a fixed spatial backbone, and larger models deliver further gains at matched memory widths. Studies spanning three model sizes and fifteen capacity configurations demonstrate these gains with compact states and low computational overhead relative to same-size ViTs; per-frame latency remains nearly unchanged during memory scaling. On THUMOS14 and SSv2, MeT-Large outperforms state-of-the-art methods in accuracy, improving mAP and Top-1 accuracy over same-size ViTs by 6.69 and 26.91, respectively, with comparable parameter counts, GFLOPs, and GPU peak. Compared with TRecViT-Large, MeT-Large uses 92.7% less persistent state and provides approximately 3.0× faster causal framewise inference. MeT establishes native visual memory as an independently scalable architectural resource, opening a direct route to stronger visual models.</p>
+          </details>
+          <div class="actions">
+            <a class="button" aria-disabled="true">Paper</a>
+            <a class="button" href="https://github.com/hustvl/MeT">GitHub</a>
+            <a class="button" href="#citation">BibTeX</a>
+          </div>
+        </div>
+        <div id="scaling" class="explorer">
+          <div class="explorer-head">
+            <div>
+              <h2>Two axes of scaling</h2>
+            </div>
+          </div>
+          <div class="chart-controls">
+            <div class="segments" role="group" aria-label="Scaling axis">
+              <button type="button" data-axis="capacity" aria-pressed="true">Memory capacity</button>
+              <button type="button" data-axis="size" aria-pressed="false">Model size</button>
+            </div>
+            <div class="selects">
+              <label><span>Model size</span><select id="slice"><option>MeT-Base</option></select></label>
+              <label><span>Benchmark</span><select id="metric"><option value="thumos">THUMOS14</option><option value="ssv2">SSv2</option></select></label>
+              <label hidden><span>Metric</span><select id="size-metric"></select></label>
+            </div>
+          </div>
+          <div class="chart-body">
+            <div class="chart-heading">
+              <p id="chart-stat" class="chart-stat" aria-live="polite"></p>
+              <ul id="size-legend" class="size-legend" aria-label="Model legend" hidden><li class="met-line">MeT</li><li class="vit-line">ViT</li></ul>
+            </div>
+            <canvas id="scaling-chart" role="img" aria-label="Measured accuracy across recurrent state widths">See the measured values in the table below.</canvas>
+          </div>
+          <p class="chart-caption">
+            <span id="capacity-caption">Measured accuracy at fixed backbone and memory layout. MeT backbones are initialized from official ImageNet-1K-pretrained ViT weights.</span>
+            <span id="size-caption" hidden>Controlled comparisons at matched spatial backbone sizes. At each size, the MeT and ViT backbones are initialized from the same official ImageNet-1K-pretrained ViT weights.</span>
+            The paper describes the experimental setup and evaluation protocol for each benchmark.
+          </p>
+          <details id="size-comparison" class="size-comparison" hidden>
+            <summary>Accuracy gains and resource ratios</summary>
+            <div class="size-summary">
+              <p id="size-gain-label" class="chart-stat"></p>
+              <ul id="size-gains" class="size-gains" aria-label="Accuracy gains by model size"></ul>
+              <p class="cost-label">Resources relative to same-size ViT</p>
+              <dl id="size-costs" class="size-costs"></dl>
+            </div>
+          </details>
+          <details class="chart-data">
+            <summary>Measured values</summary>
+            <div class="table-scroll" tabindex="0" aria-label="Measured accuracy and resource values"><table id="chart-data-table"></table></div>
+          </details>
+        </div>
+      </div>
+    </section>
+    <section aria-label="Controlled comparisons" class="results-strip">
+      <div class="shell stats">
+        <div><strong id="large-thumos-gain"></strong><p>MeT-Large over ViT-Large · THUMOS14</p></div>
+        <div><strong id="large-ssv2-gain"></strong><p>MeT-Large over ViT-Large · SSv2</p></div>
+        <div><strong>-92.7<span>% state</span></strong><p>MeT-Large vs. TRecViT-Large · THUMOS14</p></div>
+        <div><strong>≈3.0<span>× speed</span></strong><p>Causal inference vs. TRecViT-Large · THUMOS14</p></div>
+      </div>
+    </section>
+    <section id="architecture" class="section shell">
+      <header class="section-heading">
+        <p class="overline">Architecture</p>
+        <h2>Persistent state at multiple feature depths</h2>
+        <p>MeT interleaves ViT blocks with recurrent memory stages. A pre-normalized GRU updates token states, and residual readouts bring their history into the current features. Intermediate stages carry patch and CLS history into subsequent spatial blocks, while the final stage refines the CLS representation for prediction. The recurrent width <var>H</var> controls how much state each token carries.</p>
+      </header>
+      <div id="architecture-figures" class="figure-grid"></div>
+      <div id="architecture-tables" class="table-stack"></div>
+    </section>
+    <section id="results" class="section band">
+      <div class="shell">
+        <header class="section-heading">
+          <p class="overline">Experiments</p>
+          <h2>Memory scaling raises accuracy at nearly constant latency</h2>
+          <p>Across fifteen configurations, wider recurrent states improve accuracy at each backbone size. Increasing memory width changes measured THUMOS14 latency by at most 0.03 ms per frame within each size. MeT-Small exceeds ViT-Large on both benchmarks with less than one-tenth of its parameters and per-frame FLOPs.</p>
+        </header>
+        <div id="result-figures" class="figure-grid"></div>
+        <div id="result-tables" class="table-stack"></div>
+      </div>
+    </section>
+    <section id="showcases" class="section shell">
+      <header class="section-heading">
+        <p class="overline">Visual showcases</p>
+        <h2>Recognizing actions over time</h2>
+        <p>Compare ViT-Large, TRecViT-Large, and MeT-Large on THUMOS14 for causal online action recognition at the frame level and on SSv2 for clip-level video classification.</p>
+      </header>
+      <div id="case-overview" class="figure-grid"></div>
+      <section class="case-section" aria-labelledby="thumos-title">
+        <header class="case-heading">
+          <h3 id="thumos-title">THUMOS14</h3>
+          <p>Play each clip to follow its recorded 4 Hz action scores. Green shading marks ground-truth action intervals.</p>
+        </header>
+        <div id="thumos-cases" class="case-grid"></div>
+      </section>
+      <section class="case-section" aria-labelledby="ssv2-title">
+        <header class="case-heading">
+          <h3 id="ssv2-title">Something-Something V2 (SSv2)</h3>
+          <p>The predictions and softmax scores are clip-level results from 32 sampled frames.</p>
+        </header>
+        <div id="ssv2-cases" class="case-grid"></div>
+      </section>
+      <div id="additional-case-figures" class="figure-grid"></div>
+      <noscript><p>Enable JavaScript to view the interactive results.</p></noscript>
+    </section>
+    <section id="contact" class="section band" aria-labelledby="contact-title">
+      <div class="shell">
+        <header class="section-heading">
+          <p class="overline">More information</p>
+          <h2 id="contact-title">Contact</h2>
+          <p>Hi, I’m Ziyang Xu, a second-year Ph.D. student at Huazhong University of Science and Technology. My research spans visual generation, perception, and memory, with a current focus on memory modeling for foundation models.</p>
+          <p>I’m looking for internships and startup opportunities in this area. If you’re excited about building foundation models with scalable memory and exploring their applications, please get in touch through my homepage.</p>
+        </header>
+        <a class="button primary" href="https://ziyangxu.top/">Visit my homepage</a>
+      </div>
+    </section>
+    <section id="citation" class="section citation" aria-labelledby="citation-title">
+      <div class="shell">
+        <header class="section-heading">
+          <p class="overline">Citation</p>
+          <h2 id="citation-title">BibTeX</h2>
+        </header>
+        <div class="citation-box">
+          <button class="citation-copy" type="button" id="copy-citation" hidden>Copy BibTeX</button>
+          <pre id="bibtex"><code>Coming soon</code></pre>
+        </div>
+        <p id="copy-status" class="copy-status" role="status"></p>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="shell">
+      <a class="brand" href="#main"><img src="assets/icon.png" alt="" width="27" height="27">MeT</a>
+      <p>Written by <a href="https://ziyangxu.top/">Ziyang Xu</a> on <time datetime="2026-11-27">November 27, 2026</time>.</p>
+    </div>
+  </footer>
+</body>
+</html>
