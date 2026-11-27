@@ -61,7 +61,7 @@
 
 ## News
 
-- **November 27, 2026**: We’ve launched the [MeT project page](https://hustvl.github.io/MeT/). Take a look at the interactive scaling charts, detailed results, and visual showcases. Stay tuned for more updates.
+- **November 27, 2026**: 🔥🔥 We’ve launched the [MeT project page](https://hustvl.github.io/MeT/). Take a look at the interactive scaling charts, detailed results, and visual showcases. Stay tuned for more updates. ☕
 
 <!--
 - **`Paper release date`**: We’ve released the first public version of the MeT paper.
