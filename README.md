@@ -1,6 +1,6 @@
 <h1 align="center">Native Scalable Memory Models with Transformers</h1>
 
-<p align="center"><em> MeT makes native visual memory an independently scalable architectural resource, establishing two scaling trends with compact states and low computational overhead</em></p>
+<p align="center"><em><strong> MeT makes native visual memory an independently scalable architectural resource, establishing two scaling trends with compact states and low computational overhead</strong></em></p>
 
 <p align="center">
   <a href="https://ziyangxu.top/">Ziyang&nbsp;Xu</a><sup>1</sup>,
